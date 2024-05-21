@@ -25,7 +25,7 @@ services:
     ports:
       - '3040:3000'
     environment:
-      - PORT=3000
+      - PORT=3040
     container_name: testb
     networks:
       - my-net
