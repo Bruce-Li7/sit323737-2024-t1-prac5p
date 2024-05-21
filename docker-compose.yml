@@ -1,0 +1,41 @@
+version: '3.8' #  Docker Compose file version 3,8
+
+services: 
+
+  app: # The first service
+    build: . # Builds the Docker image from the Dockerfile in the current directory
+    image: bruce7788/task5-1 # Names the Docker image
+    ports: # Maps the port 3000 of the container to the port 3000 on the host
+      - '3000:3000'
+    environment: # Sets environment variables in the container
+      - PORT=3000
+    container_name: testa # Names the container
+    networks: # Specifies the networks the container can connect to my-net
+      - my-net
+    healthcheck: # Checks the health of the container
+      test: ["CMD", "curl", "-f", "http://localhost:3000"] # The test to determine the health
+      interval: 1m30s # The time to wait between checks
+      timeout: 10s # The time to wait before considering the check to have hung
+      retries: 3 # The number of consecutive failures needed to consider a container as unhealthy
+      start_period: 40s # The time to wait for the container initialization before starting health retries
+
+  app1: # The second service 
+    build: .
+    image: bruce7788/task5-1
+    ports:
+      - '3040:3000'
+    environment:
+      - PORT=3000
+    container_name: testb
+    networks:
+      - my-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks: # Defines the networks to be used
+  my-net: # The network to be used by the services
+    driver: bridge # Uses the default bridge network driver
